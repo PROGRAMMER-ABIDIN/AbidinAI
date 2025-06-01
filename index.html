@@ -3,7 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aplikasi AbidinAI</title>
+  <meta name="google-site-verification" content="2YvIEkN15Na7y7i_bsCmFtj0V3UgNF2Lwt3EZxlmzgw" />
+  <title>AbidinAI</title>
+  <meta name="description" content="AbidinAi adalah AI kecerdasan buatan untuk membantu kebutuhan anda">
+  <meta name="robots" content="index,follow">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * {
@@ -105,7 +108,7 @@
     
     .audio-btn {
       background: rgba(0, 0, 0, 0.7);
-      color: cyan;
+      color:  cyan;
       border: 2px solid cyan;
       padding: 10px 20px;
       border-radius: 30px;
@@ -307,16 +310,38 @@
       text-align: left;
     }
     
-    .status {
-      margin-top: 15px;
-      font-size: 14px;
-      color: #aaa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    
+   .status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: bold;
+  color: white;
+  position: absolute;
+  top: 97%;
+  left: 20%;
+  
+  text-align: center;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: rainbowBlink 1.5s infinite;
+  box-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+}
+
+@keyframes rainbowBlink {
+  0%   { background-color: #ff0000; }   /* Merah */
+  20%  { background-color: #ffa500; }   /* Oranye */
+  40%  { background-color: #ffff00; }   /* Kuning */
+  60%  { background-color: #00ff00; }   /* Hijau */
+  80%  { background-color: #0000ff; }   /* Biru */
+  100% { background-color: #ff00ff; }   /* Ungu */
+}
+
+
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
@@ -391,6 +416,7 @@
     <div class="status">
       <i class="fas fa-plug"></i>
       <span>Terhubung ke Server AbidinAI</span>
+      <span class="indicator"></span>
     </div>
   </div>
 
