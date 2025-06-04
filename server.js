@@ -12,12 +12,11 @@ const PORT = process.env.PORT || 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Serve static frontend files (index.html, css, js) from /public folder
-app.use(express.static(path.join(__dirname, "public")));
-
+// Serve static files from root directory
+app.use(express.static(__dirname));
 app.use(express.json());
 
-// Proxy API route
+// Proxy route
 app.post("/api/chat", async (req, res) => {
   try {
     const payload = req.body;
@@ -44,9 +43,9 @@ app.post("/api/chat", async (req, res) => {
   }
 });
 
-// Fallback for SPA (optional)
+// Fallback ke index.html (untuk SPA)
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.listen(PORT, () => {
