@@ -1,53 +1,60 @@
-import express from "express";
-import dotenv from "dotenv";
-import fetch from "node-fetch";
-import path from "path";
-import { fileURLToPath } from "url";
-
-dotenv.config();
+// server.js
+const express = require('express');
+const cors = require('cors');
+const fetch = require('node-fetch');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Serve static files from root directory
-app.use(express.static(__dirname));
+// Middleware
+app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname)); // Serve static files from root
 
-// Proxy route
-app.post("/api/chat", async (req, res) => {
+// Environment variable (di Vercel akan diambil dari environment variables)
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+// Endpoint untuk chat AI
+app.post('/api/chat', async (req, res) => {
   try {
-    const payload = req.body;
+    const { messages, model = "meta-llama/llama-4-scout-17b-16e-instruct", temperature = 0.7, max_tokens = 1024 } = req.body;
+    
+    // Validasi input
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ error: 'Format pesan tidak valid' });
+    }
 
-    const response = await fetch(process.env.GROQ_API_URL, {
-      method: "POST",
+    // Kirim permintaan ke Groq API
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature,
+        max_tokens
+      })
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      return res.status(response.status).send(errorText);
+      const errorData = await response.json();
+      throw new Error(`Error Groq API: ${response.status} - ${errorData.error?.message || 'Error tidak diketahui'}`);
     }
 
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    console.error("Error in /api/chat:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error('Error:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Fallback ke index.html (untuk SPA)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+// Handle semua route untuk SPA
+app.get('*', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export sebagai Vercel serverless function
+module.exports = app;
