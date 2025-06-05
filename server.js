@@ -50,4 +50,9 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
+// Halaman alarm (alarm.html)
+app.get('/alarm', (req, res) => {
+  res.sendFile(path.join(__dirname, 'alarm.html'));
+});
 app.listen(PORT, () => console.log(`🚀 AbidinAI Server jalan di port ${PORT}`));
