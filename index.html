@@ -482,8 +482,8 @@ Jika memberikan kode, gunakan tiga backtick (\`\`\`) tanpa tag HTML apapun.`
   }
 
   const data = await response.json();
-  let aiReply = data.choices[0]?.message?.content || "Maaf, saya tidak bisa menjawab itu saat ini.";
-
+  let aiReply = data.reply || "Maaf, saya tidak bisa menjawab itu saat ini.";
+       
   // Hapus indikator mengetik
   document.getElementById("typingIndicator").remove();
 
