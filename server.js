@@ -1,4 +1,3 @@
-// index.js (di root)
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -18,7 +17,7 @@ app.post('/api/chat', async (req, res) => {
     messages: [
       {
         role: "system",
-        content: `Kamu adalah AbidinAI... (isi sistem prompt kamu).`
+        content: `Kamu adalah AbidinAI... (isi prompt kamu sendiri di sini)`
       },
       { role: "user", content: message }
     ],
@@ -27,22 +26,22 @@ app.post('/api/chat', async (req, res) => {
   };
 
   try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify(body)
     });
 
     const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "Maaf, tidak ada jawaban.";
+    const reply = data.choices?.[0]?.message?.content || "Maaf, tidak ada balasan.";
 
     res.json({ reply });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-app.listen(PORT, () => console.log(`Server AbidinAI jalan di port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 AbidinAI Server jalan di port ${PORT}`));
