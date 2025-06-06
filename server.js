@@ -45,9 +45,15 @@ Jika memberikan kode, gunakan tiga backtick (\`\`\`) tanpa tag HTML apapun.`
       },
       body: JSON.stringify(body)
     });
+    
+const data = await response.json();
 
-    const data = await response.json();
-    const reply = data.choices?.[0]?.message?.content || "Maaf, tidak ada balasan.";
+if (!response.ok) {
+  console.error("Groq API Error:", data);
+  return res.status(500).json({ error: data });
+}
+
+const reply = data.choices?.[0]?.message?.content || "Maaf, tidak ada balasan.";
 
     res.json({ reply });
   } catch (error) {
