@@ -13,7 +13,7 @@ app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
 
   const body = {
-    model: "llama3-70b-8192",
+    model: "meta-llama/llama-4-scout-17b-16e-instruct",
     messages: [
       {
         role: "system",
