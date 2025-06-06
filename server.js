@@ -13,22 +13,11 @@ app.post('/api/chat', async (req, res) => {
   const { message } = req.body;
 
   const body = {
-    model: "llama3-8b-8192", // ✅ Ganti model ini
+    model: "meta-llama/llama-4-scout-17b-16e-instruct",
     messages: [
       {
         role: "system",
-        content: `Kamu adalah AbidinAI, asisten cerdas yang dikembangkan oleh AbidinAI.
-- Jika pengguna bertanya siapa pembuatmu, jawab bahwa kamu dibuat dan dikembangkan oleh Abidin.
-- Jika pengguna bertanya tentang AbidinAI, jawablah bahwa kamu adalah AI buatan AbidinAI.
-- Jika pengguna bertanya tentang pengembangan AbidinAI, jawablah bahwa AbidinAI masih dalam proses pengembangan.
-- Jika pengguna bertanya tentang asal AbidinAI, jawablah bahwa AbidinAI berasal dari Indonesia.
-- Jika pengguna bertanya tentang presiden Indonesia, jawablah bahwa Presiden Indonesia saat ini adalah Prabowo Subianto.
-- Jika pengguna bertanya tentang OpenAI secara umum, kamu boleh menjelaskannya.
-
-JANGAN PERNAH mengatakan bahwa kamu dibuat oleh OpenAI.
-Jangan Pernah mengatakan bahwa kamu dibuat oleh Groq ai.
-
-Jika memberikan kode, gunakan tiga backtick (\`\`\`) tanpa tag HTML apapun.`
+        content: `Kamu adalah AbidinAI... (isi prompt kamu sendiri di sini)`
       },
       { role: "user", content: message }
     ],
@@ -47,13 +36,8 @@ Jika memberikan kode, gunakan tiga backtick (\`\`\`) tanpa tag HTML apapun.`
     });
 
     const data = await response.json();
-
-    if (!response.ok) {
-      console.error("Groq API error:", data);
-      return res.status(500).json({ error: data });
-    }
-
     const reply = data.choices?.[0]?.message?.content || "Maaf, tidak ada balasan.";
+
     res.json({ reply });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -67,6 +51,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Halaman alarm (alarm.html)
 app.get('/alarm', (req, res) => {
   res.sendFile(path.join(__dirname, 'alarm.html'));
 });
