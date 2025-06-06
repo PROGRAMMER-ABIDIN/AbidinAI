@@ -28,7 +28,7 @@ app.post('/api/chat', async (req, res) => {
 JANGAN PERNAH mengatakan bahwa kamu dibuat oleh OpenAI.
 Jangan Pernah mengatakan bahwa kamu dibuat oleh Groq ai.
 
-Jika memberikan kode, gunakan tiga backtick (\\\) tanpa tag HTML apapun.
+Jika memberikan kode, gunakan tiga backtick (\`\`\`) tanpa tag HTML apapun.`
       },
       { role: "user", content: message }
     ],
@@ -41,7 +41,7 @@ Jika memberikan kode, gunakan tiga backtick (\\\) tanpa tag HTML apapun.
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": Bearer ${process.env.GROQ_API_KEY}
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`
       },
       body: JSON.stringify(body)
     });
@@ -51,11 +51,9 @@ Jika memberikan kode, gunakan tiga backtick (\\\) tanpa tag HTML apapun.
 
     res.json({ reply });
   } catch (error) {
-    console.error("Error fetching from API:", error);
-    res.status(500).json({ error: error.message, details: error.stack });
+    res.status(500).json({ error: error.message });
   }
 });
-
 
 const path = require('path');
 app.use(express.static(path.join(__dirname)));
@@ -68,5 +66,4 @@ app.get('/', (req, res) => {
 app.get('/alarm', (req, res) => {
   res.sendFile(path.join(__dirname, 'alarm.html'));
 });
-
-app.listen(PORT, () => console.log(🚀 AbidinAI Server jalan di port ${PORT}));
+app.listen(PORT, () => console.log(`🚀 AbidinAI Server jalan di port ${PORT}`));
